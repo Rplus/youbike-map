@@ -113,7 +113,7 @@
   <div>
     <span>距: {range} m</span>
     <br>
-    <input type="range" id="range" bind:value={range} max="5000" min="10" />
+    <input type="range" id="range" bind:value={range} max="5000" min="10" step="50" />
   </div>
 </nav>
 

@@ -37,5 +37,7 @@
 <style>
   details {
     padding: 1em;
+    margin-top: auto;
+    margin-bottom: auto;
   }
 </style>

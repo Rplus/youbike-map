@@ -149,7 +149,10 @@
 </ol>
 
 
-<footer>
+<footer class="footer d-f">
+  <header>
+    <h1>YouBike Map</h1>
+  </header>
   <Comment />
 
   <ul class="info">
@@ -239,6 +242,19 @@
 
   .info {
     font-family: monospace;
+  }
+
+  .footer {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    background-color: #eef;
+    flex-direction: column;
+  }
+
+  header {
+    text-align: center;
+    border-bottom: 1px dashed #aaa;
   }
 
   .d-f {

@@ -1,4 +1,6 @@
 <script>
+  import Comment from './Comment.svelte';
+
 	let name = 'world';
   let range = 1000;
   let location = null;
@@ -148,6 +150,8 @@
 
 
 <footer>
+  <Comment />
+
   <ul class="info">
     <li>
       GitHub: <a href="https://github.com/rplus/youbike-map">Rplus / Youbike-Map</a>

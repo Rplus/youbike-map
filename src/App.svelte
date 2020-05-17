@@ -1,6 +1,6 @@
 <script>
 	let name = 'world';
-  let range = 500;
+  let range = 1000;
   let location = null;
   let points = [];
   $: recentPoints = getRecentPoints(points, range, location);
@@ -106,39 +106,42 @@
 
 
 <nav class="ctrl">
-  <button id="locate" on:click={setLocate}>Locate</button>
-  <button id="refetch" on:click={fetchData}>Refetch</button>
-  <input type="range" id="range" bind:value={range} max="5000" min="10" />
-  <span>Range: {range}m</span>
+  <button id="locate" on:click={setLocate}>定位</button>
+  <button id="refetch" on:click={fetchData}>更新</button>
+  <div>
+    <span>距: {range} m</span>
+    <br>
+    <input type="range" id="range" bind:value={range} max="5000" min="10" />
+  </div>
 </nav>
 
 <ol class="list">
   {#each recentPoints as point (point.sno)}
     <li class="item" value={point.sno}>
-      <div class="d-f">
+
+      <div class="d-f jc-sb ai-c">
         <div>
-          車：{point.sbi}
-          <br>
-          位：{point.bemp}
+          <div>{point.sna}</div>
+        </div>
+
+        <div class="numbers d-f ai-c fs-0">
+          {point.tot}
           <hr>
-          <small>共：{point.tot}</small>
+          <div>
+            <div class="bike">車 {point.sbi}</div>
+            <div class="empty">空 {point.bemp}</div>
+          </div>
         </div>
-
-        <div class="item-info">
-          {point.sna}
-          <br>
-          &nbsp;&nbsp;&nbsp;&nbsp;{point.distance} m
-          <br>
-          <br>
-          <details>
-            <a href="http://maps.google.com?q={point.lat},{point.lng}" target="_blank" title="google map link">{point.lat}, {point.lng}
-            </a>
-            <a class="img" style="--url: url({point.img})" href={point.img} target="_blank">{point.img}</a>
-          </details>
-
-        </div>
-
       </div>
+
+      <details class="details">
+        <summary>
+          {point.distance} m
+        </summary>
+        <a href="http://maps.google.com?q={point.lat},{point.lng}" target="_blank" title="google map link">{point.lat}, {point.lng}
+        </a>
+        <a class="img" style="--url: url({point.img})" href={point.img} target="_blank">{point.img}</a>
+      </details>
     </li>
   {/each}
 </ol>
@@ -153,34 +156,45 @@
   .ctrl {
     position: fixed;
     top: 0;
-    height: 2em;
+    z-index: 1;
+    height: 3em;
     display: flex;
     align-items: center;
+    justify-content: space-evenly;
+    width: 400px;
+    max-width: 100%;
+    background-color: #ffe;
   }
 
   .list {
-    padding-top: 2em;
-  }
-
-  .data-number {
-    display: inline-block;
-    width: 100px;
-    text-align: center;
+    padding: 3em .5em;
   }
 
   .item {
-    margin-bottom: 1.5em;
+    margin-bottom: 1em;
+    display: block;
+    padding-bottom: 1em;
+    border-bottom: 1px dotted #ccc;
   }
 
-  .item-info {
+  .bike { padding-bottom: .25em; }
+  .empty { color: #999; }
+
+  .details {
+    margin-top: 1em;
     margin-left: 2em;
-    font-size: smaller;
+    max-width: 100%;
+  }
+
+  .details summary {
+    opacity: .4;
   }
 
   .img {
     display: block;
     width: 300px;
     height: 300px;
+    max-width: 100%;
     word-break: break-all;
     color: transparent;
   }
@@ -204,5 +218,24 @@
 
   .d-f {
     display: flex;
+  }
+
+  .ai-c { align-items: center; }
+  .jc-sb { justify-content: space-between; }
+  .fs-0 { flex-shrink: 0; }
+
+  .d-f hr {
+    align-self: stretch;
+    margin: 0 .5em;
+  }
+
+  :global(body) {
+    max-width: 400px;
+    margin: 0 auto;
+    overflow-y: scroll;
+  }
+
+  :global(*) {
+    box-sizing: border-box;
   }
 </style>

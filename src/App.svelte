@@ -147,6 +147,23 @@
 </ol>
 
 
+<footer>
+  <ul class="info">
+    <li>
+      GitHub: <a href="https://github.com/rplus/youbike-map">Rplus / Youbike-Map</a>
+    </li>
+    <li>
+      Relesed with: <a href="https://github.com/Rplus/youbike-map/blob/master/LICENSE">MIT license</a>
+    </li>
+    <li>
+      資料來源:
+      <br>
+      <a href="https://taipeicity.github.io/traffic_realtime/">臺北市政府 交通即時資料 開放資料專區</a>
+    </li>
+  </ul>
+</footer>
+
+
 
 <!--  -->
 
@@ -214,6 +231,10 @@
     clip: rect(0, 0, 0, 0) !important;
     white-space: nowrap !important;
     border: 0 !important;
+  }
+
+  .info {
+    font-family: monospace;
   }
 
   .d-f {

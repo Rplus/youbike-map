@@ -123,7 +123,7 @@
         </div>
 
         <div class="numbers d-f ai-c fs-0">
-          {point.tot}
+          <span class="sum">{point.tot}</span>
           <hr>
           <div>
             <div class="bike">車 {point.sbi}</div>
@@ -133,7 +133,7 @@
       </div>
 
       <details class="details">
-        <summary>
+        <summary class="summary">
           {point.distance} m
         </summary>
         <a href="http://maps.google.com?q={point.lat},{point.lng}" target="_blank" title="google map link">{point.lat}, {point.lng}
@@ -197,6 +197,7 @@
     border-bottom: 1px dotted #ccc;
   }
 
+  .sum { color: #999; }
   .bike { padding-bottom: .25em; }
   .empty { color: #999; }
 
@@ -206,7 +207,7 @@
     max-width: 100%;
   }
 
-  .details summary {
+  .summary {
     opacity: .4;
   }
 
@@ -225,6 +226,7 @@
   }
 
   .info {
+    align-self: center;
     font-family: monospace;
   }
 

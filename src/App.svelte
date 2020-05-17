@@ -75,10 +75,7 @@
     return R * Math.acos(C);
   }
 
-  function getImgSrc(
-    target,
-    size = 300,
-  ) {
+  function getImgSrc(target, size = 300) {
     let p0 = target;
     let p1;
 

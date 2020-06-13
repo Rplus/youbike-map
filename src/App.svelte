@@ -9,6 +9,7 @@
 
   $: currentPosMarker = location ? `&markers=${location.lat},${location.lng}` : undefined;
   $: errMsg = '';
+  $: updateTime = '';
 
   const locateOption = {
     enableHighAccuracy: true,
@@ -46,6 +47,7 @@
       errMsg = err;
       console.error(123, err);
     }
+    updateTime = new Intl.DateTimeFormat('zh-TW', { timeStyle: 'medium', hour12: false }).format(new Date());
   };
 
   function getRecentPoints(points, range, location) {
@@ -113,7 +115,7 @@
 
 <nav class="ctrl">
   <button id="locate" on:click={setLocate}>定位</button>
-  <button id="refetch" on:click={fetchData}>更新</button>
+  <button id="refetch" on:click={fetchData} data-updatetime={updateTime}>更新</button>
   <div>
     <span>距: {range} m</span>
     <br>
@@ -200,6 +202,18 @@
     width: 400px;
     max-width: 100%;
     background-color: #ffe;
+  }
+
+  #refetch {
+    position: relative;
+  }
+  #refetch::before {
+    content: attr(data-updatetime);
+    position: absolute;
+    top: 100%;
+    left: -.5em;
+    font-family: monospace;
+    color: #aaa;
   }
 
   .workspace {

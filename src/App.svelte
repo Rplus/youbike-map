@@ -258,13 +258,13 @@
     box-shadow: 0 0 0 1px #0003;
     background-color: #f00;
     transform-origin: 0% 50%;
-    transform: rotate(calc(var(--a) * 1deg));
+    transform: rotate(calc(var(--a) * -1deg));
   }
 
   .map-point::after {
     content: attr(data-bike);
     position: relative;
-    transform: rotate(calc(var(--a) * -1deg));
+    transform: rotate(calc(var(--a) * 1deg));
     display: inline-block;
   }
 

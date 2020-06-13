@@ -128,36 +128,36 @@
     {errMsg}
   </div>
 
-<ol class="list">
-  {#each recentPoints as point (point.sno)}
-    <li class="item" value={point.sno}>
+  <ol class="list">
+    {#each recentPoints as point (point.sno)}
+      <li class="item" value={point.sno}>
 
-      <div class="d-f jc-sb ai-c">
-        <div>
-          <div>{point.sna}</div>
-        </div>
-
-        <div class="numbers d-f ai-c fs-0">
-          <span class="sum">{point.tot}</span>
-          <hr>
+        <div class="d-f jc-sb ai-c">
           <div>
-            <div class="bike">車 {point.sbi}</div>
-            <div class="empty">空 {point.bemp}</div>
+            <div>{point.sna}</div>
+          </div>
+
+          <div class="numbers d-f ai-c fs-0">
+            <span class="sum">{point.tot}</span>
+            <hr>
+            <div>
+              <div class="bike">車 {point.sbi}</div>
+              <div class="empty">空 {point.bemp}</div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <details class="details">
-        <summary class="summary">
-          {point.distance} m
-        </summary>
-        <a href="http://maps.google.com?q={point.lat},{point.lng}" target="_blank" title="google map link">{point.lat}, {point.lng}
-        </a>
-        <a class="img" style="--url: url({point.img})" href={point.img} target="_blank">_</a>
-      </details>
-    </li>
-  {/each}
-</ol>
+        <details class="details">
+          <summary class="summary">
+            {point.distance} m
+          </summary>
+          <a href="http://maps.google.com?q={point.lat},{point.lng}" target="_blank" title="google map link">{point.lat}, {point.lng}
+          </a>
+          <a class="img" style="--url: url({point.img})" href={point.img} target="_blank">_</a>
+        </details>
+      </li>
+    {/each}
+  </ol>
 </div>
 
 

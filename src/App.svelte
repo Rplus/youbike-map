@@ -8,6 +8,7 @@
   const KEY = 'AIzaSyCjDnDGv67nvhzBsLRYAwTbiF1HrZBQDUM';
 
   $: currentPosMarker = location ? `&markers=${location.lat},${location.lng}` : undefined;
+  $: errMsg = '';
 
   const locateOption = {
     enableHighAccuracy: true,
@@ -35,9 +36,16 @@
     setLocate();
 
     console.log('fetchData');
-    const res = await fetch('https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.json').then(d => d.json())
-    console.log('fetchData done', res);
-    points = Object.values(res.retVal);
+    try {
+      const res = await fetch('https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.json')//.then(d => d.json())
+      const data = await res.json();
+      points = Object.values(data.retVal);
+      console.log('fetchData done', data);
+    }
+    catch (err) {
+      errMsg = err;
+      console.error(123, err);
+    }
   };
 
   function getRecentPoints(points, range, location) {
@@ -113,6 +121,13 @@
   </div>
 </nav>
 
+
+<div class="workspace">
+
+  <div class="error-message">
+    {errMsg}
+  </div>
+
 <ol class="list">
   {#each recentPoints as point (point.sno)}
     <li class="item" value={point.sno}>
@@ -143,6 +158,7 @@
     </li>
   {/each}
 </ol>
+</div>
 
 
 <footer class="footer d-f">
@@ -186,8 +202,17 @@
     background-color: #ffe;
   }
 
+  .workspace {
+    padding-top: 3em;
+  }
+
+  .error-message {
+    font-family: monospace;
+    color: #900;
+  }
+
   .list {
-    padding: 3em .5em;
+    padding: 0 .5em;
   }
 
   .item {

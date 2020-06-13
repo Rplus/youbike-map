@@ -66,6 +66,10 @@
           p.lat
         ]);
         p.distance = distance.toFixed();
+        let dx = p.lng - location.lng;
+        let dy = p.lat - location.lat;
+        p._d = p.distance / range;
+        p._a = 180 * (Math.atan2( dy, dx ) / Math.PI);
         return distance < range;
       })
     }
@@ -129,6 +133,17 @@
   <div class="error-message">
     {errMsg}
   </div>
+
+  {#if location}
+    <div class="map">
+      {#each recentPoints.slice(0, 5) as point (point.sno)}
+        <div class="map-point"
+          data-bike={point.sbi}
+          style="--d: {point._d}; --a: {point._a}; "
+        />
+      {/each}
+    </div>
+  {/if}
 
   <ol class="list">
     {#each recentPoints as point (point.sno)}
@@ -223,6 +238,34 @@
   .error-message {
     font-family: monospace;
     color: #900;
+  }
+
+  .map {
+    margin-top: 1em;
+    position: relative;
+    padding-bottom: 100%;
+    text-align: right;
+    overflow: hidden;
+    box-shadow: inset 0 0 5px 2px #0003;
+  }
+
+  .map-point {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(70% * var(--d));
+    height: 0;
+    box-shadow: 0 0 0 1px #0003;
+    background-color: #f00;
+    transform-origin: 0% 50%;
+    transform: rotate(calc(var(--a) * 1deg));
+  }
+
+  .map-point::after {
+    content: attr(data-bike);
+    position: relative;
+    transform: rotate(calc(var(--a) * -1deg));
+    display: inline-block;
   }
 
   .list {

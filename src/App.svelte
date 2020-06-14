@@ -138,6 +138,7 @@
     <div class="map">
       {#each recentPoints.slice(0, 5) as point (point.sno)}
         <div class="map-point"
+          data-name={point.sna}
           data-bike={point.sbi}
           style="--d: {point._d}; --a: {point._a}; "
         />
@@ -243,10 +244,13 @@
   .map {
     margin-top: 1em;
     position: relative;
-    padding-bottom: 100%;
+    padding-bottom: calc(100% - 2em);
     text-align: right;
     overflow: hidden;
+    margin-left: 1em;
+    margin-right: 1em;
     box-shadow: inset 0 0 5px 2px #0003;
+    background-color: #0991;
   }
 
   .map-point {
@@ -261,11 +265,31 @@
     transform: rotate(calc(var(--a) * -1deg));
   }
 
+  .map-point:hover {
+    --o: 1;
+  }
+
   .map-point::after {
+    content: attr(data-name);
+    position: absolute;
+    width: max-content;
+    transform: translate(-50%, 50%) rotate(calc(var(--a) * 1deg));
+    color: #0005;
+    opacity: var(--o, 0);
+    pointer-events: none;
+  }
+
+  .map-point::before {
     content: attr(data-bike);
     position: relative;
-    transform: rotate(calc(var(--a) * 1deg));
-    display: inline-block;
+    display: inline-flex;
+    width: 1.75em;
+    height: 1.75em;
+    align-items: center;
+    justify-content: center;
+    transform: translate(100%, -50%) rotate(calc(var(--a) * 1deg));
+    border-radius: 1em;
+    box-shadow: 0 0 0 1px #0002;
   }
 
   .list {

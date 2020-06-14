@@ -266,17 +266,21 @@
   }
 
   .map-point:hover {
-    --o: 1;
+    --o: .4;
   }
 
   .map-point::after {
     content: attr(data-name);
     position: absolute;
+    top: 0;
+    left: 100%;
     width: max-content;
+    transform-origin: 50% 50%;
     transform: translate(-50%, 50%) rotate(calc(var(--a) * 1deg));
-    color: #0005;
-    opacity: var(--o, 0);
+    color: rgba(0, 0, 0, var(--o, 0));
     pointer-events: none;
+    font-size: small;
+    white-space: nowrap;
   }
 
   .map-point::before {

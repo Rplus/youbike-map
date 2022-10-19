@@ -10,6 +10,11 @@
   $: currentPosMarker = location ? `&markers=${location.lat},${location.lng}` : undefined;
   $: errMsg = '';
   $: updateTime = '';
+  let dataVersion = 'v1';
+  const DATA_SOURCE = {
+    'v1': 'https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.json',
+    'v2': 'https://tcgbusfs.blob.core.windows.net/dotapp/youbike/v2/youbike_immediate.json',
+  };
 
   const locateOption = {
     enableHighAccuracy: true,
@@ -38,20 +43,20 @@
 
     console.log('fetchData');
     try {
-      const res = await fetch('https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.json')//.then(d => d.json())
+      const res = await fetch(DATA_SOURCE[dataVersion]);
       const data = await res.json();
-      points = Object.values(data.retVal);
-      console.log('fetchData done', data);
+      // data.retVal: v1
+      points = data.retVal ? Object.values(data.retVal) : data;
     }
     catch (err) {
       errMsg = err;
-      console.error(123, err);
+      console.error({err});
     }
     updateTime = new Intl.DateTimeFormat('zh-TW', { timeStyle: 'medium', hour12: false }).format(new Date());
   };
 
   function getRecentPoints(points, range, location) {
-    console.log('getRecentPoints');
+    // console.log('getRecentPoints');
     points = points.map(p => {
       p.img = getImgSrc(p);
       return p;
@@ -103,12 +108,15 @@
       + `?size=${size}x${size}`
       + `&center=${p0.lat},${p0.lng}`
       + `&markers=size:mid|${p0.lat},${p0.lng}`
-      + (p1 ? `&markers=color:yellow|label:T|${p1.lat},${p1.lng}` : '')
+      + (p1 ? `&markers=color:black|label:T|${p1.lat},${p1.lng}` : '')
       + `&key=${KEY}`
     );
   }
 
-  fetchData();
+  $: {
+    dataVersion;
+    fetchData();
+  }
 </script>
 
 
@@ -124,6 +132,22 @@
     <span>距: {range} m</span>
     <br>
     <input type="range" id="range" bind:value={range} max="5000" min="10" step="50" />
+  </div>
+  <div class="d-f">
+    版
+    <br>
+    本
+    <div>
+      <label>
+        <input type="radio" name="version" value="v1" bind:group={dataVersion}>
+        v1
+      </label>
+      <br>
+      <label>
+        <input type="radio" name="version" value="v2" bind:group={dataVersion}>
+        v2
+      </label>
+    </div>
   </div>
 </nav>
 

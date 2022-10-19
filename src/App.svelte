@@ -11,6 +11,8 @@
   $: errMsg = '';
   $: updateTime = '';
   let dataVersion = 'v1';
+  let dotCount = 5;
+  let loading = false;
   const DATA_SOURCE = {
     'v1': 'https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.json',
     'v2': 'https://tcgbusfs.blob.core.windows.net/dotapp/youbike/v2/youbike_immediate.json',
@@ -39,6 +41,7 @@
   }
 
   async function fetchData() {
+    loading = true;
     setLocate();
 
     console.log('fetchData');
@@ -47,10 +50,12 @@
       const data = await res.json();
       // data.retVal: v1
       points = data.retVal ? Object.values(data.retVal) : data;
+      loading = false;
     }
     catch (err) {
       errMsg = err;
       console.error({err});
+      loading = false;
     }
     updateTime = new Intl.DateTimeFormat('zh-TW', { timeStyle: 'medium', hour12: false }).format(new Date());
   };
@@ -128,21 +133,13 @@
 <nav class="ctrl">
   <button id="locate" on:click={setLocate}>定位</button>
   <button id="refetch" on:click={fetchData} data-updatetime={updateTime}>更新</button>
-  <div>
-    <span>距: {range} m</span>
-    <br>
-    <input type="range" id="range" bind:value={range} max="5000" min="10" step="50" />
-  </div>
   <div class="d-f">
-    版
-    <br>
-    本
+    版本:
     <div>
       <label>
         <input type="radio" name="version" value="v1" bind:group={dataVersion}>
         v1
       </label>
-      <br>
       <label>
         <input type="radio" name="version" value="v2" bind:group={dataVersion}>
         v2
@@ -152,7 +149,22 @@
 </nav>
 
 
-<div class="workspace">
+<div class="workspace" class:loading={loading}>
+  <details>
+    <summary>資料點調整</summary>
+    <div class="d-f jc-se">
+      <div>
+        <span>距: {range} m</span>
+        <br>
+        <input type="range" id="range" bind:value={range} max="5000" min="10" step="50" />
+      </div>
+      <label>
+        資料點數量:
+        <br>
+        <input type="number" bind:value={dotCount} min="5" max="15">
+      </label>
+    </div>
+  </details>
 
   <div class="error-message">
     {errMsg}
@@ -160,7 +172,7 @@
 
   {#if location}
     <div class="map">
-      {#each recentPoints.slice(0, 5) as point (point.sno)}
+      {#each recentPoints.slice(0, +dotCount) as point (point.sno)}
         <div class="map-point"
           data-name={point.sna}
           data-bike={point.sbi}
@@ -237,6 +249,7 @@
     z-index: 1;
     height: 3em;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-evenly;
     width: 400px;
@@ -275,6 +288,22 @@
     margin-right: 1em;
     box-shadow: inset 0 0 5px 2px #0003;
     background-color: #0991;
+  }
+
+  .loading .map::before {
+    content: 'loading';
+    position: absolute;
+    inset: 0;
+    z-index: 100;
+    padding: 0.5em;
+    font-size: 2rem;
+    color: #000c;
+    font-weight: 900;
+    font-family: monospace;
+    text-transform: capitalize;
+    text-shadow: 2px 2px 4px #fff;
+    background: #0001;
+    backdrop-filter: blur(3px);
   }
 
   .map-point {
@@ -383,6 +412,7 @@
 
   .ai-c { align-items: center; }
   .jc-sb { justify-content: space-between; }
+  .jc-se { justify-content: space-evenly; }
   .fs-0 { flex-shrink: 0; }
 
   .d-f hr {

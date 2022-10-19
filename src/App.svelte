@@ -205,9 +205,9 @@
           <summary class="summary">
             {point.distance} m
           </summary>
-          <a href="http://maps.google.com?q={point.lat},{point.lng}" target="_blank" title="google map link">{point.lat}, {point.lng}
+          <a href="http://maps.google.com?q={point.lat},{point.lng}" target="_blank" rel="noreferrer" title="google map link">{point.lat}, {point.lng}
           </a>
-          <a class="img" style="--url: url({point.img})" href={point.img} target="_blank">_</a>
+          <a class="img" style="--url: url({point.img})" href={point.img} target="_blank" rel="noreferrer">_</a>
         </details>
       </li>
     {/each}
